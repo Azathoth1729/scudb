@@ -164,13 +164,47 @@ ORDER BY CategoryId
 
 ### Problem Description
 
-+
-+
++ For the first 10 orders by `CutomerId BLONP` : get the Order's `Id` , `OrderDate` ,
+  previous `OrderDate` , and difference between the previous and current. Return
+  results ordered by `OrderDate` (ascending)
++ **Details**: The "previous" `OrderDate` for the first order should default to itself (lag
+  time = 0). Use the `julianday()` function for date arithmetic (example).
+  Use lag(expr, offset, default) for grabbing previous dates.
+  Please round the lag time to the nearest hundredth, formatted like `17361|2012-09-
+  19 12:13:21|2012-09-18 22:37:15|0.57`
+
 
 ### Code
 
 ```sql
+WITH final AS (
+    WITH cte AS (
+        WITH cte_BLONP AS (
+            SELECT Id, OrderDate
+            FROM "Order"
+            WHERE "Order".CustomerId = 'BLONP'
+            ORDER BY OrderDate
+            LIMIT 10
+        )
+        SELECT *,
+               lag(OrderDate) over ()           AS Temp,
+               rank() over (ORDER BY OrderDate) AS Rank
+        FROM cte_BLONP
+    )
 
+    SELECT Id, OrderDate,
+           CASE
+               WHEN Rank=1 THEN OrderDate
+               ELSE Temp
+               END AS PreOrderDate
+    FROM cte
+)
+
+SELECT Id || '|' ||
+       OrderDate || '|' ||
+       PreOrderDate || '|' ||
+       ROUND(CAST(julianday(OrderDate) - julianday(PreOrderDate) AS FLOAT), 2) AS Q7
+FROM final
 ```
 
 ### Result
@@ -182,8 +216,14 @@ ORDER BY CategoryId
 
 ### Problem Description
 
-+
-+
++ For each `Customer` , get the CompanyName, CustomerId, and "total expenditures".
+  Output the bottom quartile of Customers, as measured by total expenditures.
++ Details: Calculate expenditure using `UnitPrice` and `Quantity` (ignore `Discount` ).
+  Compute the quartiles for each company's total expenditures using <ins>NTILE</ins>. The
+  bottom quartile is the 1st quartile, order them by increasing expenditure.
+  Make sure your output is formatted as follows (round expenditure to the nearest
+  hundredths): `Bon app|BONAP|4485708.49`
+
 
 ### Code
 
@@ -200,13 +240,19 @@ ORDER BY CategoryId
 
 ### Problem Description
 
-+
-+
++ Find the youngest employee serving each `Region` . If a Region is not served by an
+employee, ignore it.
++ **Details**: Print the `Region Description`, `First Name`, `Last Name`, and `Birth Date`.
+  Order by Region `Id`
 
 ### Code
 
 ```sql
-
+SELECT RegionDescription || '|' || FirstName || '|' || LastName || '|' || MAX(BirthDate) AS Q9
+FROM Employee EE,EmployeeTerritory ET, Territory T, Region R
+WHERE EE.Id = ET.EmployeeId AND ET.TerritoryId = T.Id AND T.RegionId = R.Id
+GROUP BY R.Id
+ORDER BY R.Id;
 ```
 
 ### Result
