@@ -1,0 +1,5 @@
+SELECT ShipName
+FROM "Order";
+
+
+
