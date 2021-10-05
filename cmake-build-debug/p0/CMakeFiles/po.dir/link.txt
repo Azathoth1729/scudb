@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/po.dir/main.cpp.o -o po 

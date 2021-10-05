@@ -1,4 +1,0 @@
-/home/azathoth/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/212.5080.54/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_DEPENDS_USE_COMPILER=FALSE -G "CodeBlocks - Unix Makefiles" /home/azathoth/Workshop/DB/scudb
--- Configuring done
--- Generating done
--- Build files have been written to: /home/azathoth/Workshop/DB/scudb/cmake-build-debug
