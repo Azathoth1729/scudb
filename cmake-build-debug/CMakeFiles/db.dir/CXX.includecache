@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/azathoth/Workshop/DB/scudb/main.cpp
+p0_starter.h
+/home/azathoth/Workshop/DB/scudb/p0_starter.h
+iostream
+-
+
+/home/azathoth/Workshop/DB/scudb/p0_starter.h
+exception
+-
+iostream
+-
+memory
+-
+stdexcept
+-
+string
+-
+vector
+-
+
