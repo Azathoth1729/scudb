@@ -1,0 +1,4 @@
+.idea
+northwind.db
+CMakeLists.txt
+cmake-build-debug

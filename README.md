@@ -1,19 +1,19 @@
 # scudb (po)
 
-## 目录结构
+## Directory Hierarchy
 
 ```
 .
-├── asset --截图
+├── asset --screenshot
 ├── cmake-build-debug
 ├── CMakeLists.txt
-├── p0 --p0作业
+├── p0 --p0 homework
 └── README.md
-
 ```
-## 运行结果
 
-![avatar](./asset/p0_output.png)
+## Result
+
+![avatar](assets/p0_output.png)
 
 
 

@@ -236,10 +236,10 @@ db_BINARY_DIR:STATIC=/home/azathoth/Workshop/DB/scudb/cmake-build-debug
 db_SOURCE_DIR:STATIC=/home/azathoth/Workshop/DB/scudb
 
 //Value Computed by CMake
-p0_BINARY_DIR:STATIC=/home/azathoth/Workshop/DB/scudb/cmake-build-debug/p0
+p0_BINARY_DIR:STATIC=/home/azathoth/Workshop/DB/scudb/cmake-build-debug/src
 
 //Value Computed by CMake
-p0_SOURCE_DIR:STATIC=/home/azathoth/Workshop/DB/scudb/p0
+p0_SOURCE_DIR:STATIC=/home/azathoth/Workshop/DB/scudb/src
 
 //Value Computed by CMake
 scudb_BINARY_DIR:STATIC=/home/azathoth/Workshop/DB/scudb/cmake-build-debug
