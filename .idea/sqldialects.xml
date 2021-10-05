@@ -2,15 +2,5 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/README.md" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q10_christmas.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q1_sample.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q2_string_function.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q3_northamerican.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q4_delaypercent.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q5_aggregates.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q6_discontinued.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q7_order_lags.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q8_total_cost_quartiles.sql" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/q9_youngblood.sql" dialect="GenericSQL" />
   </component>
 </project>
