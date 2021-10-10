@@ -2,6 +2,10 @@
 
 **2019141460319 金可成**
 
+All the below results are from running codes on **clion**.
+
+# questions
+
 ## q1
 
 ### Problem Description
@@ -152,7 +156,11 @@ ORDER BY CategoryId
 ### Code
 
 ```sql
-
+SELECT ProductName || '|' ||CompanyName || '|' ||ContactName AS Q6, MIN(OrderDate)
+FROM Product P, OrderDetail OD, "Order" O, Customer C
+WHERE P.Id = OD.ProductId AND OD.OrderId = O.Id AND O.CustomerId =  C.Id AND P.Discontinued = 1
+GROUP BY ProductName
+ORDER BY ProductName;
 ```
 
 ### Result
@@ -228,7 +236,17 @@ FROM final
 ### Code
 
 ```sql
-
+SELECT *
+FROM(
+    SELECT IFNULL(CompanyName, 'MISSING_NAME') AS CompanyName, CustomerId, ROUND(SUM(UnitPrice * Quantity) ,2)  AS TotalExpenditures,
+           NTILE(4) OVER(ORDER BY CAST(ROUND(SUM(UnitPrice * Quantity) ,2) AS float)) AS ID
+    FROM "Order"
+         JOIN OrderDetail ON "Order".Id = OrderDetail.OrderId
+        LEFT JOIN Customer ON "Order".CustomerId  = Customer.Id
+    GROUP BY CustomerId
+    ORDER BY TotalExpenditures
+)
+WHERE ID = 1;
 ```
 
 ### Result
@@ -264,13 +282,56 @@ ORDER BY R.Id;
 
 ### Problem Description
 
-+
-+
++ Concatenate the `ProductName` s ordered by the Company `'Queen Cozinha'` on `2014-12-25` .
++ Order the products by Id (ascending). Print a single string
+  containing all the dup names separated by commas like `Mishi Kobe
+  Niku, NuNuCa Nuß-Nougat-Creme...`
 
 ### Code
 
 ```sql
+--non-recursive
+WITH cte AS (
+    SELECT ProductName
+    FROM Product P, OrderDetail OD, "Order" O , Customer C
+    WHERE P.Id = OD.ProductId AND OD.OrderId = O.Id AND O.CustomerId = C.Id AND C.CompanyName = 'Queen Cozinha' AND OrderDate LIKE '2014-12-25%'
+    ORDER BY P.Id
+)
+SELECT GROUP_CONCAT(cte.ProductName, ',')
+FROM cte;
 
+--recursive
+WITH RECURSIVE
+    init AS (
+        SELECT ProductName, RANK() over (ORDER BY P.Id) AS Rank, RANK() over (ORDER BY P.Id) + 1 AS Next
+        FROM Product P,
+             OrderDetail OD,
+             "Order" O,
+             Customer C
+        WHERE P.Id = OD.ProductId
+          AND OD.OrderId = O.Id
+          AND O.CustomerId = C.Id
+          AND C.CompanyName = 'Queen Cozinha'
+          AND OrderDate LIKE '2014-12-25%'
+        ORDER BY P.Id
+    ),
+    concate(ProductName, Rank, Next) AS (
+            SELECT ProductName, Rank, Next
+            FROM init
+            WHERE RANK = 1
+            UNION ALL
+            SELECT  concate.ProductName|| ', ' || init.ProductName , init.Rank, init.Next
+            FROM concate
+                JOIN init ON init.Rank = concate.Next
+    ),
+    final(ProductName, Rank, Next) AS (
+        SELECT ProductName, Rank, MAX(Rank)
+        FROM concate
+    )
+
+
+SELECT ProductName
+FROM final;
 ```
 
 ### Result
