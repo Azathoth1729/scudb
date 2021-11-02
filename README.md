@@ -10,9 +10,9 @@ This is for **database** course (2021 fall) at Sichuan University.
 
 + [main](https://github.com/Azathoth1729/scudb)
 + [p0](https://github.com/Azathoth1729/scudb/tree/p0)
-+ [p1](https://github.com/Azathoth1729/scudb/tree/p1)
++ [p1](https://github.com/Azathoth1729/scudb/tree/p1) (hw 1)
 
-[comment]: <> (+ [p2]&#40;https://github.com/Azathoth1729/scudb/tree/p2&#41;)
++ [p2](https://github.com/Azathoth1729/scudb/tree/p2) (hw 2)
 
 [comment]: <> (+ [p3]&#40;https://github.com/Azathoth1729/scudb/tree/p3&#41;)
 
