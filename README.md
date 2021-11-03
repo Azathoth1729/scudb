@@ -34,7 +34,7 @@ iv
 
 
 
-- [x] i (![$Q \rightarrow U \rightarrow V$][1])
+- [x] i ($Q \rightarrow U \rightarrow V$)
 
 - [ ] ii 
 - [x] iii  ($Q \rightarrow U \Rightarrow QS \rightarrow SU \rightarrow T$)
@@ -47,10 +47,10 @@ Here, "$\wedge$" means logical conjunction "and".
 
 ### (c)
 
-- [x] .
+- [x] .d
 
 ### (d)
-- [ ] . 
+- [ ] .
 
 
 
@@ -135,15 +135,16 @@ $candidate \; keys=\{RS\}, \{PQ \}$
 
 $R \rightarrow P$ violates BCNF,  thus we break  $\mathcal{E}$ in two parts:
 
-+ $\mathcal{E}_1(RP)$, corresponding functional dependencies: $F_1 = \{R \rightarrow P\}$. now,  $\mathcal{E}_1$  is  in BCNF.
++ $\mathcal{E}_1(RP)$, corresponding functional dependencies: $F_1 = \{R \rightarrow P\}$. Now,  $\mathcal{E}_1$  is in BCNF.
 + $\mathcal{E}_2(RQS)$, $F_2=\{S \rightarrow Q\}$, $F_2$ violates BCNF
 
+Break $\mathcal{E}_2$ into $\mathcal{E}_3(SQ)$ and $\mathcal{E}_4(SR)$ 
 
+$\mathcal{E}_3$ is in BCNF but $\mathcal{E}_4$ does not, so we continue  break  $\mathcal{E}_4$ into: $\mathcal{E}_5(S),\; \mathcal{E}_6(R)$
 
-[1]: https://latex.codecogs.com/svg.latex?Q&space;\rightarrow&space;U&space;\rightarrow&space;V
+Finally got one decomposition: $\mathcal{E}_1(RP), \; \mathcal{E}_3(SQ), \; \mathcal{E}_5(S),\; \mathcal{E}_6(R)$
 
-[2]: 
+To show this decomposition has as few tables as possible, one could see that the rest FDs which violates BCNF is $S \rightarrow Q$.
 
-[3]: 
+And the decomposition from $S \rightarrow Q$ leads to similar results except the difference in letters(R/S, P/Q).
 
-[4]:
