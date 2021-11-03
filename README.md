@@ -32,7 +32,9 @@ iv
 
 ### (b)
 
-- [x] i ($Q \rightarrow U \rightarrow V$)
+
+
+- [x] i (<img src="https://render.githubusercontent.com/render/math?math=$Q \rightarrow U \rightarrow V$" alt="">)
 
 - [ ] ii 
 - [x] iii  ($Q \rightarrow U \Rightarrow QS \rightarrow SU \rightarrow T$)
@@ -46,12 +48,10 @@ Here, "$\wedge$" means logical conjunction "and".
 
 ### (c)
 
-- [x] 
+- [x] .
 
 ### (d)
-
-- [ ] 
-
+- [ ] . 
 
 
 
