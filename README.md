@@ -34,14 +34,13 @@ iv
 
 
 
-- [x] i (<img src="https://render.githubusercontent.com/render/math?math=$Q \rightarrow U \rightarrow V$" alt="">)
+- [x] i (![$Q \rightarrow U \rightarrow V$][1])
 
 - [ ] ii 
 - [x] iii  ($Q \rightarrow U \Rightarrow QS \rightarrow SU \rightarrow T$)
 - [x] iv  ($QS \rightarrow SU \rightarrow R \rightarrow  W$)
 - [x] v  ($(PQ \rightarrow S) \wedge (Q \rightarrow  U)  \Rightarrow PQ \rightarrow SU \rightarrow R \rightarrow W$)
 - [ ] vi
-
 
 
 Here, "$\wedge$" means logical conjunction "and".
@@ -141,3 +140,10 @@ $R \rightarrow P$ violates BCNF,  thus we break  $\mathcal{E}$ in two parts:
 
 
 
+[1]: https://latex.codecogs.com/svg.latex?Q&space;\rightarrow&space;U&space;\rightarrow&space;V
+
+[2]: 
+
+[3]: 
+
+[4]:
