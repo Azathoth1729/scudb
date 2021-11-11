@@ -1,2 +1,5 @@
 .idea
 northwind.db
+
+build
+cmake-build-debug
