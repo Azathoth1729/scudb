@@ -71,3 +71,4 @@ foreach(test_src ${test_srcs} )
             --gtest_output=xml:${CMAKE_BINARY_DIR}/test/${test_name}.xml)
 
 endforeach(test_src ${test_srcs})
+add_definitions("-Wno-error=deprecated-copy")
