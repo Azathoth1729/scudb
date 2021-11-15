@@ -19,9 +19,19 @@ This is SCU Sqlite Database Systems
 
 #### result:
 
-![](assests/extensible_hash_test.png)
+![extensible_hash_test](assests/extensible_hash_test.png)
 
 ### Task2: LRU Page Replacement Policy
+
++ [x] `Insert(T)`
++ [x] `Victim(T)`
++ [x] `Erase(T)`
++ [x] `Size()`
++ [x] thread-safe using `std::mutex`
+
+#### result:
+
+![lru_replacer_test](assests/lru_replacer_test.png)
 
 ### Task3: Buffer pool Manager
 
@@ -100,4 +110,4 @@ https://sqlite.org/vtab.html
   delete/insert from index)
 * delete empty page from table heap when delete tuple
 * implement delete table, with empty page bitmap in disk manager (how to persistent?)
-* index: unique/dup key, variable key
+* index: unique/dup val, variable val

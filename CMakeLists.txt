@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
-if(POLICY CMP0042)
+if (POLICY CMP0042)
     cmake_policy(SET CMP0042 NEW)
-endif()
+endif ()
+
+set(CMAKE_CXX_STANDARD 20)
 
 # ---[ SQLite_VTable project
 project(SQLite_VTable CXX C)
@@ -16,11 +18,11 @@ find_package(Threads REQUIRED)
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-std=c++1y" COMPILER_SUPPORTS_CXX1y)
 
-if(COMPILER_SUPPORTS_CXX1y)
+if (COMPILER_SUPPORTS_CXX1y)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
-else()
+else ()
     message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++1y support. Please use a different C++ compiler.")
-endif()
+endif ()
 
 # Create a new pre-processor macro __VTableFILE__ that has a truncated
 # path to reduce the size of the debug log messages.

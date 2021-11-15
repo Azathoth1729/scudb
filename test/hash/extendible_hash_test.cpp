@@ -11,8 +11,7 @@ namespace scudb {
 
 TEST(ExtendibleHashTest, SampleTest) {
   // set leaf size as 2
-  ExtendibleHash<int, std::string> *test =
-      new ExtendibleHash<int, std::string>(2);
+  auto *test = new ExtendibleHash<int, std::string>(2);
 
   // insert several key/value pairs
   test->Insert(1, "a");
@@ -39,11 +38,24 @@ TEST(ExtendibleHashTest, SampleTest) {
   EXPECT_EQ("b", result);
   EXPECT_EQ(0, test->Find(10, result));
 
+  // custom test
+  EXPECT_EQ(9, test->getSize());
+  EXPECT_EQ("i", test->Get(9));
+  EXPECT_EQ("h", test->Get(8));
+  EXPECT_EQ("a", test->Get(1));
+
   // delete test
   EXPECT_EQ(1, test->Remove(8));
+  EXPECT_EQ(8, test->getSize()); // custom test
+
   EXPECT_EQ(1, test->Remove(4));
+  EXPECT_EQ(7, test->getSize()); // custom test
+
   EXPECT_EQ(1, test->Remove(1));
+  EXPECT_EQ(6, test->getSize()); // custom test
+
   EXPECT_EQ(0, test->Remove(20));
+  EXPECT_EQ(6, test->getSize()); // custom test
 
   delete test;
 }
@@ -53,12 +65,12 @@ TEST(ExtendibleHashTest, ConcurrentInsertTest) {
   const int num_threads = 3;
   // Run concurrent test multiple times to guarantee correctness.
   for (int run = 0; run < num_runs; run++) {
-    std::shared_ptr<ExtendibleHash<int, int>> test{new ExtendibleHash<int, int>(2)};
+    std::shared_ptr<ExtendibleHash<int, int>> test{
+        new ExtendibleHash<int, int>(2)};
     std::vector<std::thread> threads;
     for (int tid = 0; tid < num_threads; tid++) {
-      threads.push_back(std::thread([tid, &test]() {
-        test->Insert(tid, tid);
-      }));
+      threads.push_back(
+          std::thread([tid, &test]() { test->Insert(tid, tid); }));
     }
     for (int i = 0; i < num_threads; i++) {
       threads[i].join();
@@ -76,7 +88,8 @@ TEST(ExtendibleHashTest, ConcurrentRemoveTest) {
   const int num_threads = 5;
   const int num_runs = 50;
   for (int run = 0; run < num_runs; run++) {
-    std::shared_ptr<ExtendibleHash<int, int>> test{new ExtendibleHash<int, int>(2)};
+    std::shared_ptr<ExtendibleHash<int, int>> test{
+        new ExtendibleHash<int, int>(2)};
     std::vector<std::thread> threads;
     std::vector<int> values{0, 10, 16, 32, 64};
     for (int value : values) {

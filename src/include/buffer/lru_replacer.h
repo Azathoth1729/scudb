@@ -11,10 +11,24 @@
 
 #include "buffer/replacer.h"
 #include "hash/extendible_hash.h"
+#include <iostream>
+#include <unordered_map>
 
 namespace scudb {
 
-template <typename T> class LRUReplacer : public Replacer<T> {
+template <class T> class LRUReplacer : public Replacer<T> {
+
+  struct Node {
+
+    T val;
+    std::shared_ptr<Node> prev;
+    std::shared_ptr<Node> next;
+
+    Node() = default;
+    explicit Node(T v) : val(v){};
+  };
+  using NodePtr = std::shared_ptr<Node>;
+
 public:
   // do not change public interface
   LRUReplacer();
@@ -29,8 +43,35 @@ public:
 
   size_t Size();
 
+  NodePtr head;
+  NodePtr tail;
+
+  void display() {
+    NodePtr node = head;
+    std::cout << "list: " << std::endl;
+
+    while (node != nullptr) {
+      std::cout << node->val << " ";
+      node = node->next;
+    }
+    std::cout << std::endl;
+
+    std::cout << "unordered_map: " << std::endl;
+
+    for (auto [key, val] : lruMap) {
+      std::cout << key << ": " << val << " ";
+    }
+    std::cout << std::endl;
+  }
+
 private:
-  // add your member variables here
+  std::mutex mutex;
+  std::unordered_map<T, NodePtr> lruMap;
+
+  // add node as first node of the linked list
+  void add(NodePtr node);
+  // remove node of the linked list
+  void remove(NodePtr node);
 };
 
 } // namespace scudb

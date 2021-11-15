@@ -14,7 +14,7 @@
 #include <mutex>
 #include <string>
 #include <vector>
-
+#include <memory>
 #include "hash/hash_table.h"
 
 namespace scudb {
@@ -40,32 +40,36 @@ class ExtendibleHash : public HashTable<K, V> {
     void clear();
   };
 
-  using Buckets = std::vector<Bucket *>;
+  using Buckets = std::vector<std::shared_ptr<Bucket>>;
 
 public:
   // constructor
-  explicit ExtendibleHash(size_t size);
+  explicit ExtendibleHash(size_t bucketSize = 3);
   // helper function to generate hash addressing
   size_t HashKey(const K &key) const;
   // helper function to get global & local depth
   int GetGlobalDepth() const;
   int GetLocalDepth(int bucket_id) const;
+  // helper function to get the number of elements in the hash map
+  int getSize() const;
   int GetNumBuckets() const;
   // lookup and modifier
   bool Find(const K &key, V &value) override;
   bool Remove(const K &key) override;
   void Insert(const K &key, const V &value) override;
+  V Get(const K &key) override;
 
 private:
   int globalDepth;
   Buckets hashTable;
   size_t bucketMaxSize;
-  std::mutex mutex;
+  size_t size{};
+  std::recursive_mutex mutex;
 
   // When localDepth == globalDepth, double the size of hashTable via directly
-  // push_back the same size pointer.
+  // push_back the same size of pointers.
   void grow();
-  void split(Bucket *targetBucket);
+  void split(const std::shared_ptr<Bucket>& targetBucket);
   int getHashIndex(const K &key) const;
 };
 

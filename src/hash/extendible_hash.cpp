@@ -5,10 +5,6 @@
 
 namespace scudb {
 
-/*
- * constructor
- * array_size: fixed array size for each bucket
- */
 template <typename K, typename V> bool ExtendibleHash<K, V>::Bucket::isFull() {
   return vals.size() == maxSize;
 }
@@ -49,11 +45,15 @@ template <typename K, typename V> void ExtendibleHash<K, V>::Bucket::clear() {
   vals.clear();
 }
 
+/*
+ * constructor
+ * array_size: fixed array bucketSize for each bucket
+ */
 template <typename K, typename V>
-ExtendibleHash<K, V>::ExtendibleHash(size_t size)
-    : globalDepth(1), bucketMaxSize{size} {
+ExtendibleHash<K, V>::ExtendibleHash(size_t bucketSize)
+    : globalDepth(1), bucketMaxSize{bucketSize} {
   for (int i = 0; i < 1 << globalDepth; i++) {
-    hashTable.push_back(new Bucket(1, bucketMaxSize));
+    hashTable.push_back(std::make_shared<Bucket>(1, bucketMaxSize));
   }
 }
 
@@ -91,6 +91,10 @@ int ExtendibleHash<K, V>::GetLocalDepth(int bucket_id) const {
   return hashTable[bucket_id]->getDepth();
 }
 
+template <typename K, typename V> int ExtendibleHash<K, V>::getSize() const {
+  return size;
+}
+
 /*
  * helper function to return current number of bucket in hash table
  */
@@ -104,10 +108,10 @@ int ExtendibleHash<K, V>::GetNumBuckets() const {
  */
 template <typename K, typename V>
 bool ExtendibleHash<K, V>::Find(const K &key, V &value) {
-  std::lock_guard<std::mutex> guard(mutex);
+  std::lock_guard<std::recursive_mutex> guard(mutex);
 
   int index = getHashIndex(key);
-  Bucket *bucket = hashTable[index];
+  std::shared_ptr<Bucket> bucket = hashTable[index];
 
   if (bucket->vals.find(key) != bucket->vals.end()) {
     value = bucket->vals[key];
@@ -122,10 +126,15 @@ bool ExtendibleHash<K, V>::Find(const K &key, V &value) {
  */
 template <typename K, typename V>
 bool ExtendibleHash<K, V>::Remove(const K &key) {
-  std::lock_guard<std::mutex> guard(mutex);
+  std::lock_guard<std::recursive_mutex> guard(mutex);
 
   int index = getHashIndex(key);
-  return hashTable[index]->remove(key);
+  if (hashTable[index]->remove(key)) {
+    size--;
+    return true;
+  }
+
+  return false;
 }
 
 template <typename K, typename V> void ExtendibleHash<K, V>::grow() {
@@ -136,8 +145,7 @@ template <typename K, typename V> void ExtendibleHash<K, V>::grow() {
 }
 
 template <typename K, typename V>
-void ExtendibleHash<K, V>::split(Bucket *targetBucket) {
-  std::lock_guard<std::mutex> guard(mutex);
+void ExtendibleHash<K, V>::split(const std::shared_ptr<Bucket> &targetBucket) {
 
   int oldIndex = targetBucket->getDepth();
 
@@ -147,8 +155,8 @@ void ExtendibleHash<K, V>::split(Bucket *targetBucket) {
   }
   int maskIndex = 1 << oldIndex;
 
-  auto firstBucket = new Bucket(oldIndex + 1, bucketMaxSize);
-  auto SecondBucket = new Bucket(oldIndex + 1, bucketMaxSize);
+  auto firstBucket = std::make_shared<Bucket>(oldIndex + 1, bucketMaxSize);
+  auto secondBucket = std::make_shared<Bucket>(oldIndex + 1, bucketMaxSize);
 
   /*
    * After hashTable grow, we need to rehash all vals that belongs to the split
@@ -158,9 +166,9 @@ void ExtendibleHash<K, V>::split(Bucket *targetBucket) {
   for (const auto &item : targetBucket->vals) {
     size_t newIndex = getHashIndex(item.first);
     if (newIndex & maskIndex) {
-      SecondBucket->vals.insert(item);
-    } else {
       firstBucket->vals.insert(item);
+    } else {
+      secondBucket->vals.insert(item);
     }
   }
 
@@ -171,9 +179,9 @@ void ExtendibleHash<K, V>::split(Bucket *targetBucket) {
   for (size_t i = 0; i < hashTable.size(); i++) {
     if (hashTable[i] == targetBucket) {
       if (i & maskIndex) {
-        hashTable[i] = SecondBucket;
-      } else {
         hashTable[i] = firstBucket;
+      } else {
+        hashTable[i] = secondBucket;
       }
     }
   }
@@ -186,16 +194,24 @@ void ExtendibleHash<K, V>::split(Bucket *targetBucket) {
  */
 template <typename K, typename V>
 void ExtendibleHash<K, V>::Insert(const K &key, const V &value) {
+  std::lock_guard<std::recursive_mutex> guard(mutex);
 
   int index = getHashIndex(key);
-  Bucket *targetBucket = hashTable[index];
+  auto targetBucket = hashTable[index];
   if (targetBucket->isFull()) {
     split(targetBucket);
     Insert(key, value);
   } else {
-    std::lock_guard<std::mutex> guard(mutex);
     targetBucket->insert(key, value);
+    size++;
   }
+}
+
+template <typename K, typename V> V ExtendibleHash<K, V>::Get(const K &key) {
+  std::lock_guard<std::recursive_mutex> guard(mutex);
+  V val;
+  Find(key, val);
+  return val;
 }
 
 template class ExtendibleHash<page_id_t, Page *>;
