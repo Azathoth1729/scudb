@@ -35,6 +35,17 @@ This is SCU Sqlite Database Systems
 
 ### Task3: Buffer pool Manager
 
++ [x] `FetchPage(page_id)`
++ [x] `NewPage(page_id)`
++ [x] `UnpinPage(page_id, is_dirty)`
++ [x] `FlushPage(page_id)`
++ [x] `FlushAllPages()`
++ [x] `DeletePage(page_id)`
++ [x] thread-safe using `std::mutex`
+
+#### result:
+
+![lru_replacer_test](assests/buffer_pool_manager_test.png)
 ### Build
 
 ```
@@ -103,11 +114,3 @@ and [CREATE VIRTUAL TABLE](https://sqlite.org/lang_createvtab.html) for further 
 ### Virtual table API
 
 https://sqlite.org/vtab.html
-
-### TODO
-
-* update: when size exceed that page, table heap returns false and delete/insert tuple (rid will change and need to
-  delete/insert from index)
-* delete empty page from table heap when delete tuple
-* implement delete table, with empty page bitmap in disk manager (how to persistent?)
-* index: unique/dup val, variable val

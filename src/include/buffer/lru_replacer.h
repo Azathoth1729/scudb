@@ -12,11 +12,12 @@
 #include "buffer/replacer.h"
 #include "hash/extendible_hash.h"
 #include <iostream>
+#include <sstream>
 #include <unordered_map>
-
 namespace scudb {
 
 template <class T> class LRUReplacer : public Replacer<T> {
+  friend class BufferPoolManager;
 
   struct Node {
 
@@ -46,23 +47,7 @@ public:
   NodePtr head;
   NodePtr tail;
 
-  void display() {
-    NodePtr node = head;
-    std::cout << "list: " << std::endl;
-
-    while (node != nullptr) {
-      std::cout << node->val << " ";
-      node = node->next;
-    }
-    std::cout << std::endl;
-
-    std::cout << "unordered_map: " << std::endl;
-
-    for (auto [key, val] : lruMap) {
-      std::cout << key << ": " << val << " ";
-    }
-    std::cout << std::endl;
-  }
+  [[nodiscard]] std::string ToString(bool more = false) const;
 
 private:
   std::mutex mutex;

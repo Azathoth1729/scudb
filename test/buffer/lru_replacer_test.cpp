@@ -6,7 +6,7 @@
 
 #include "buffer/lru_replacer.h"
 #include "gtest/gtest.h"
-
+#include <iostream>
 namespace scudb {
 
 TEST(LRUReplacerTest, SampleTest) {
@@ -21,7 +21,8 @@ TEST(LRUReplacerTest, SampleTest) {
   lru_replacer.Insert(6);
   lru_replacer.Insert(1);
   EXPECT_EQ(6, lru_replacer.Size());
-  
+
+  std::cout << lru_replacer.ToString();
   // pop element from replacer
   int value;
   lru_replacer.Victim(value);

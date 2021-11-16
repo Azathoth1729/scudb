@@ -16,9 +16,9 @@ extern std::chrono::duration<long long int> LOG_TIMEOUT;
 
 extern std::atomic<bool> ENABLE_LOGGING;
 
-#define INVALID_PAGE_ID -1 // representing an invalid page id
-#define INVALID_TXN_ID -1  // representing an invalid txn id
-#define INVALID_LSN -1     // representing an invalid lsn
+#define INVALID_PAGE_ID (-1) // representing an invalid page id
+#define INVALID_TXN_ID (-1)  // representing an invalid txn id
+#define INVALID_LSN (-1)     // representing an invalid lsn
 #define HEADER_PAGE_ID 0   // the header page id
 #define PAGE_SIZE 512     // size of a data page in byte
 #define LOG_BUFFER_SIZE                                                            \

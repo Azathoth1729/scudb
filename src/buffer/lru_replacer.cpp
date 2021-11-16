@@ -94,8 +94,32 @@ template <typename T> bool LRUReplacer<T>::Erase(const T &value) {
 
 template <typename T> size_t LRUReplacer<T>::Size() { return lruMap.size(); }
 
-template class LRUReplacer<Page *>;
+template <typename T> std::string LRUReplacer<T>::ToString(bool more) const {
+  std::ostringstream stream;
+  stream << "lru replacer:  \n";
+
+  NodePtr node = head;
+  while (node != nullptr) {
+    stream << node->val << " ";
+    node = node->next;
+  }
+
+  stream << "\n";
+
+  if (more) {
+    stream << "unordered_map: \n";
+
+    for (auto [key, val] : lruMap) {
+      stream << key << ": " << val << " ";
+    }
+    stream << "\n";
+  }
+
+  return stream.str();
+}
+
 // test only
 template class LRUReplacer<int>;
+template class LRUReplacer<Page *>;
 
 } // namespace scudb

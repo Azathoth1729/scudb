@@ -25,10 +25,10 @@ public:
   // get actual data page content
   inline char *GetData() { return data_; }
   // get page id
-  inline page_id_t GetPageId() { return page_id_; }
+  [[nodiscard]] inline page_id_t GetPageId() const { return page_id_; }
   // get page pin count
-  inline int GetPinCount() { return pin_count_; }
-  // method use to latch/unlatch page content
+  [[nodiscard]] inline int GetPinCount() const { return pin_count_; }
+  // method used to latch/unlatch page content
   inline void WUnlatch() { rwlatch_.WUnlock(); }
   inline void WLatch() { rwlatch_.WLock(); }
   inline void RUnlatch() { rwlatch_.RUnlock(); }
@@ -46,6 +46,7 @@ private:
   int pin_count_ = 0;
   bool is_dirty_ = false;
   RWMutex rwlatch_;
+
 };
 
 } // namespace scudb
