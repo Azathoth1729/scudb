@@ -6,6 +6,7 @@
 
 namespace scudb {
 
+// add node as the first node of the linked list
 template <typename T> void LRUReplacer<T>::add(NodePtr node) {
   if (node == nullptr) {
     return;
@@ -22,6 +23,7 @@ template <typename T> void LRUReplacer<T>::add(NodePtr node) {
   }
 }
 
+// remove node in the linked list
 template <typename T> void LRUReplacer<T>::remove(NodePtr node) {
   if (head == tail) {
     head = nullptr;
@@ -94,6 +96,7 @@ template <typename T> bool LRUReplacer<T>::Erase(const T &value) {
 
 template <typename T> size_t LRUReplacer<T>::Size() { return lruMap.size(); }
 
+// just for test
 template <typename T> std::string LRUReplacer<T>::ToString(bool more) const {
   std::ostringstream stream;
   stream << "lru replacer:  \n";

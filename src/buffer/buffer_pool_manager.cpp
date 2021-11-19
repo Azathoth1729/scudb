@@ -191,7 +191,7 @@ Page *BufferPoolManager::findAvailable() {
       return nullptr;
     }
 
-    // if page dirt write it to disk
+    // if page dirty, write it to disk
     if (page->is_dirty_) {
       disk_manager_->WritePage(page->page_id_, page->GetData());
       page->is_dirty_ = false;

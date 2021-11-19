@@ -10,23 +10,24 @@
 #pragma once
 
 #include <cstdlib>
-#include <map>
+#include <unordered_map>
+
+#include "hash/hash_table.h"
+#include <memory>
 #include <mutex>
 #include <string>
 #include <vector>
-#include <memory>
-#include "hash/hash_table.h"
 
 namespace scudb {
 
 template <typename K, typename V>
 class ExtendibleHash : public HashTable<K, V> {
-  class Bucket {
+
+  struct Bucket {
     int localDepth;
     size_t maxSize{};
+    std::unordered_map<K, V> vals;
 
-  public:
-    std::map<K, V> vals;
     // constructor
     explicit Bucket(int d, int s) : localDepth(d), maxSize(s){};
 
@@ -48,11 +49,11 @@ public:
   // helper function to generate hash addressing
   size_t HashKey(const K &key) const;
   // helper function to get global & local depth
-  int GetGlobalDepth() const;
-  int GetLocalDepth(int bucket_id) const;
+  [[nodiscard]] int GetGlobalDepth() const;
+  [[nodiscard]] int GetLocalDepth(int bucket_id) const;
   // helper function to get the number of elements in the hash map
-  int getSize() const;
-  int GetNumBuckets() const;
+  [[nodiscard]] int getSize() const;
+  [[nodiscard]] int GetNumBuckets() const;
   // lookup and modifier
   bool Find(const K &key, V &value) override;
   bool Remove(const K &key) override;
@@ -69,7 +70,7 @@ private:
   // When localDepth == globalDepth, double the size of hashTable via directly
   // push_back the same size of pointers.
   void grow();
-  void split(const std::shared_ptr<Bucket>& targetBucket);
+  void split(const std::shared_ptr<Bucket> &targetBucket);
   int getHashIndex(const K &key) const;
 };
 

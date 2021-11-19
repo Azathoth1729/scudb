@@ -17,7 +17,6 @@
 namespace scudb {
 
 template <class T> class LRUReplacer : public Replacer<T> {
-  friend class BufferPoolManager;
 
   struct Node {
 
@@ -44,18 +43,19 @@ public:
 
   size_t Size();
 
-  NodePtr head;
-  NodePtr tail;
-
+  // just for test
   [[nodiscard]] std::string ToString(bool more = false) const;
 
 private:
+  NodePtr head;
+  NodePtr tail;
+
   std::mutex mutex;
   std::unordered_map<T, NodePtr> lruMap;
 
-  // add node as first node of the linked list
+  // add node as the first node of the linked list
   void add(NodePtr node);
-  // remove node of the linked list
+  // remove node in the linked list
   void remove(NodePtr node);
 };
 
