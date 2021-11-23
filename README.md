@@ -1,116 +1,13 @@
-# lab1
+# lab2
 
 **2019141460319 金可成**
 
-This is SCU Sqlite Database Systems
+This is a simple Sqlite Database Systems
 
 ## assignment
 
-### Task1: Extensible Hash Table
+### Task1: B+ Tree Pages
 
-+ [x] `HashKey(K)`
-+ [x] `Find(K, V)`
-+ [x] `Insert(K, V)`
-+ [x] `Remove(K) `
-+ [x] `GetGlobalDepth()`
-+ [x] `GetLocalDepth(bucket_id)`
-+ [x] `GetNumBuckets()`
-+ [x] thread-safe using `std::mutex`
+### Task2: B+ Tree Data Structure
 
-#### result:
-
-![extensible_hash_test](assests/extensible_hash_test.png)
-
-### Task2: LRU Page Replacement Policy
-
-+ [x] `Insert(T)`
-+ [x] `Victim(T)`
-+ [x] `Erase(T)`
-+ [x] `Size()`
-+ [x] thread-safe using `std::mutex`
-
-#### result:
-
-![lru_replacer_test](assests/lru_replacer_test.png)
-
-### Task3: Buffer pool Manager
-
-+ [x] `FetchPage(page_id)`
-+ [x] `NewPage(page_id)`
-+ [x] `UnpinPage(page_id, is_dirty)`
-+ [x] `FlushPage(page_id)`
-+ [x] `FlushAllPages()`
-+ [x] `DeletePage(page_id)`
-+ [x] thread-safe using `std::mutex`
-
-#### result:
-
-![lru_replacer_test](assests/buffer_pool_manager_test.png)
-### Build
-
-```
-mkdir build
-cd build
-cmake ..
-make
-```
-
-Debug mode:
-
-```
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-make
-```
-
-### Testing
-
-```
-cd build
-make check
-```
-
-### Run virtual table extension in SQLite
-
-Start SQLite with:
-
-```
-cd build
-./bin/sqlite3
-```
-
-In SQLite, load virtual table extension with:
-
-```
-.load ./lib/libvtable.dylib
-```
-
-or load `libvtable.so` (Linux), `libvtable.dll` (Windows)
-
-Create virtual table:  
-1.The first input parameter defines the virtual table schema. Please follow the format of (column_name [space]
-column_type) seperated by comma. We only support basic data types including INTEGER, BIGINT, SMALLINT, BOOLEAN, DECIMAL
-and VARCHAR.  
-2.The second parameter define the index schema. Please follow the format of (index_name [space] indexed_column_names)
-seperated by comma.
-
-```
-sqlite> CREATE VIRTUAL TABLE foo USING vtable('a int, b varchar(13)','foo_pk a')
-```
-
-After creating virtual table:  
-Type in any sql statements as you want.
-
-```
-sqlite> INSERT INTO foo values(1,'hello');
-sqlite> SELECT * FROM foo ORDER BY a;
-a           b         
-----------  ----------
-1           hello   
-```
-
-See [Run-Time Loadable Extensions](https://sqlite.org/loadext.html)
-and [CREATE VIRTUAL TABLE](https://sqlite.org/lang_createvtab.html) for further information.
-
-### Virtual table API
-
-https://sqlite.org/vtab.html
+### Task3: Index Iterator
