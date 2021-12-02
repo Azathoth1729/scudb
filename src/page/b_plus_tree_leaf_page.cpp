@@ -181,8 +181,10 @@ int B_PLUS_TREE_LEAF_PAGE_TYPE::RemoveAndDeleteRecord(
   int index = KeyIndex(key, comparator);
   auto pair = GetItem(index);
   if (GetSize() > 0 && index < GetSize() && comparator(key, pair.first) == 0) {
-    memmove(array + index, array + index + 1,
-            static_cast<size_t>(GetSize() - 1 - index) * sizeof(MappingType));
+    for (int i = index; i < GetSize(); i++) {
+      array[i] = array[i + 1];
+    }
+
     IncreaseSize(-1);
   }
   return GetSize();
@@ -210,8 +212,11 @@ void B_PLUS_TREE_LEAF_PAGE_TYPE::MoveAllTo(BPlusTreeLeafPage *recipient, int,
 
 INDEX_TEMPLATE_ARGUMENTS
 void B_PLUS_TREE_LEAF_PAGE_TYPE::CopyAllFrom(MappingType *items, int size) {
-  memmove(array + GetSize(), items,
-          static_cast<size_t>(sizeof(MappingType) * size));
+  assert(GetSize() + size <= GetMaxSize());
+  int begin = GetSize();
+  for (int i = 0; i < size; i++) {
+    array[i + begin] = *items++;
+  }
   IncreaseSize(size);
 }
 
@@ -230,9 +235,10 @@ void B_PLUS_TREE_LEAF_PAGE_TYPE::MoveFirstToEndOf(
 
   MappingType first = GetItem(0);
   recipient->CopyLastFrom(first);
+  for (int i = 0; i < GetSize() - 1; i++) {
+    array[i] = array[i + 1];
+  }
 
-  memmove(array, array + 1,
-          static_cast<size_t>(GetSize() - 1) * sizeof(MappingType));
   IncreaseSize(-1);
 
   auto *page = buffer_pool_manager->FetchPage(GetParentPageId());
@@ -276,8 +282,9 @@ void B_PLUS_TREE_LEAF_PAGE_TYPE::CopyFirstFrom(
     const MappingType &item, int parentIndex,
     BufferPoolManager *buffer_pool_manager) {
 
-  memmove(array + 1, array,
-          static_cast<size_t>(GetSize() * sizeof(MappingType)));
+  for (int i = 1; i <= GetSize(); i++) {
+    array[i] = array[i - 1];
+  }
   array[0] = item;
   IncreaseSize(1);
 

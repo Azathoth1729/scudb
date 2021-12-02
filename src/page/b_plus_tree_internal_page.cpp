@@ -354,7 +354,7 @@ void B_PLUS_TREE_INTERNAL_PAGE_TYPE::QueueUpChildren(
     if (page == nullptr)
       throw Exception(EXCEPTION_TYPE_INDEX,
                       "all page are pinned while printing");
-    BPlusTreePage *node = reinterpret_cast<BPlusTreePage *>(page->GetData());
+    auto *node = reinterpret_cast<BPlusTreePage *>(page->GetData());
     queue->push(node);
   }
 }
