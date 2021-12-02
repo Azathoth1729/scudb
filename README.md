@@ -4,7 +4,8 @@
 
 ## Introduction
 
-This is for **database** course (2021 fall) at Sichuan University.
+A course on the design and implementation of database management systems (2021 fall)
+at Sichuan University.
 
 ## Branch Link
 
@@ -12,7 +13,6 @@ This is for **database** course (2021 fall) at Sichuan University.
 + [p1](https://github.com/Azathoth1729/scudb/tree/p1) (hw 1)
 + [p2](https://github.com/Azathoth1729/scudb/tree/p2) (hw 2)
 + [lab1](https://github.com/Azathoth1729/scudb/tree/lab1) (lab 1)
-
-[comment]: <> (+ [lab2]&#40;https://github.com/Azathoth1729/scudb/tree/lab2&#41; &#40;lab 2&#41;)
++ [lab2](https://github.com/Azathoth1729/scudb/tree/lab2) (lab 2)
 
 [comment]: <> (+ [lab3]&#40;https://github.com/Azathoth1729/scudb/tree/lab3&#41; &#40;lab 3&#41;)
