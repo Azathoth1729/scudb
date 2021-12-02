@@ -21,9 +21,10 @@
 #include "page/b_plus_tree_page.h"
 
 namespace scudb {
-
 #define B_PLUS_TREE_INTERNAL_PAGE_TYPE                                         \
   BPlusTreeInternalPage<KeyType, ValueType, KeyComparator>
+
+#define BPInternalPage BPlusTreeInternalPage<KeyType, page_id_t, KeyComparator>
 
 INDEX_TEMPLATE_ARGUMENTS
 class BPlusTreeInternalPage : public BPlusTreePage {
@@ -50,13 +51,14 @@ public:
                  BufferPoolManager *buffer_pool_manager);
   void MoveFirstToEndOf(BPlusTreeInternalPage *recipient,
                         BufferPoolManager *buffer_pool_manager);
-  void MoveLastToFrontOf(BPlusTreeInternalPage *recipient,
-                         int parent_index,
+  void MoveLastToFrontOf(BPlusTreeInternalPage *recipient, int parent_index,
                          BufferPoolManager *buffer_pool_manager);
-  // DEUBG and PRINT
+  // DEBUG and PRINT
   std::string ToString(bool verbose) const;
   void QueueUpChildren(std::queue<BPlusTreePage *> *queue,
                        BufferPoolManager *buffer_pool_manager);
+
+  void SetValueAt(int index, const ValueType &value);
 
 private:
   void CopyHalfFrom(MappingType *items, int size,

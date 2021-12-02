@@ -10,7 +10,7 @@ template <typename K, typename V> bool ExtendibleHash<K, V>::Bucket::isFull() {
 }
 
 template <typename K, typename V> bool ExtendibleHash<K, V>::Bucket::isEmpty() {
-  return vals.size() == 0;
+  return vals.empty();
 }
 
 template <typename K, typename V> int ExtendibleHash<K, V>::Bucket::getDepth() {

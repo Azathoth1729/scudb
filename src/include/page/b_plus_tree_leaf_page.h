@@ -27,6 +27,7 @@
 namespace scudb {
 #define B_PLUS_TREE_LEAF_PAGE_TYPE                                             \
   BPlusTreeLeafPage<KeyType, ValueType, KeyComparator>
+#define BPInternalPage BPlusTreeInternalPage<KeyType, page_id_t, KeyComparator>
 
 INDEX_TEMPLATE_ARGUMENTS
 class BPlusTreeLeafPage : public BPlusTreePage {
@@ -40,7 +41,7 @@ public:
   void SetNextPageId(page_id_t next_page_id);
   KeyType KeyAt(int index) const;
   int KeyIndex(const KeyType &key, const KeyComparator &comparator) const;
-  const MappingType &GetItem(int index);
+  const std::pair<KeyType, ValueType> &GetItem(int index) const;
 
   // insert and delete methods
   int Insert(const KeyType &key, const ValueType &value,

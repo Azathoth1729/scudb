@@ -18,7 +18,7 @@ namespace scudb {
 template <size_t KeySize> class GenericKey {
 public:
   inline void SetFromKey(const Tuple &tuple) {
-    // intialize to 0
+    // initialize to 0
     memset(data, 0, KeySize);
     memcpy(data, tuple.GetData(), tuple.GetLength());
   }
@@ -88,10 +88,10 @@ public:
   }
 
   // constructor
-  GenericComparator(Schema *key_schema) : key_schema_(key_schema) {}
+  explicit GenericComparator(Schema *key_schema) : key_schema_(key_schema) {}
 
 private:
-  Schema *key_schema_;
+  Schema *key_schema_{};
 };
 
 } // namespace scudb

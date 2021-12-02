@@ -26,9 +26,9 @@ INDEX_TEMPLATE_ARGUMENTS
 class BPlusTree {
 public:
   explicit BPlusTree(const std::string &name,
-                           BufferPoolManager *buffer_pool_manager,
-                           const KeyComparator &comparator,
-                           page_id_t root_page_id = INVALID_PAGE_ID);
+                     BufferPoolManager *buffer_pool_manager,
+                     const KeyComparator &comparator,
+                     page_id_t root_page_id = INVALID_PAGE_ID);
 
   // Returns true if this B+ tree has no keys and values.
   bool IsEmpty() const;
@@ -60,7 +60,9 @@ public:
                       Transaction *transaction = nullptr);
   // expose for test purpose
   B_PLUS_TREE_LEAF_PAGE_TYPE *FindLeafPage(const KeyType &key,
-                                           bool leftMost = false);
+                                           bool leftMost = false,
+                                           Operation op = Operation::READONLY,
+                                           Transaction *transaction = nullptr);
 
 private:
   void StartNewTree(const KeyType &key, const ValueType &value);
@@ -78,10 +80,8 @@ private:
   bool CoalesceOrRedistribute(N *node, Transaction *transaction = nullptr);
 
   template <typename N>
-  bool Coalesce(
-      N *&neighbor_node, N *&node,
-      BPlusTreeInternalPage<KeyType, page_id_t, KeyComparator> *&parent,
-      int index, Transaction *transaction = nullptr);
+  void Coalesce(N *&neighbor_node, N *&node, BPInternalPage *&parent, int index,
+                Transaction *transaction = nullptr);
 
   template <typename N> void Redistribute(N *neighbor_node, N *node, int index);
 
@@ -89,11 +89,24 @@ private:
 
   void UpdateRootPageId(int insert_record = false);
 
+  template <class N> bool isSafe(N *node, Operation op);
+
+  inline void lockRoot() { mutex_.lock(); }
+  inline void unlockRoot() { mutex_.unlock(); }
+
   // member variable
+  std::mutex mutex_;
+  static thread_local bool root_is_locked; // test if root is locked
   std::string index_name_;
   page_id_t root_page_id_;
   BufferPoolManager *buffer_pool_manager_;
   KeyComparator comparator_;
+
+  /*
+   * Unlock all nodes current transaction hold according to op then unpin pages
+   * and delete all pages if any
+   */
+  void UnlockUnpinPages(Operation op, Transaction *transaction);
 };
 
 } // namespace scudb
