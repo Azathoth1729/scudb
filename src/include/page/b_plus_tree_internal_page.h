@@ -24,8 +24,6 @@ namespace scudb {
 #define B_PLUS_TREE_INTERNAL_PAGE_TYPE                                         \
   BPlusTreeInternalPage<KeyType, ValueType, KeyComparator>
 
-#define BPInternalPage BPlusTreeInternalPage<KeyType, page_id_t, KeyComparator>
-
 INDEX_TEMPLATE_ARGUMENTS
 class BPlusTreeInternalPage : public BPlusTreePage {
 public:
@@ -54,7 +52,7 @@ public:
   void MoveLastToFrontOf(BPlusTreeInternalPage *recipient, int parent_index,
                          BufferPoolManager *buffer_pool_manager);
   // DEBUG and PRINT
-  std::string ToString(bool verbose) const;
+  [[nodiscard]] std::string ToString(bool verbose) const;
   void QueueUpChildren(std::queue<BPlusTreePage *> *queue,
                        BufferPoolManager *buffer_pool_manager);
 

@@ -19,8 +19,9 @@
 #include "page/b_plus_tree_leaf_page.h"
 
 namespace scudb {
+#define B_PLUS_TREE_TYPE BPlusTree<KeyType, ValueType, KeyComparator>
 
-#define BPLUSTREE_TYPE BPlusTree<KeyType, ValueType, KeyComparator>
+
 // Main class providing the API for the Interactive B+ Tree.
 INDEX_TEMPLATE_ARGUMENTS
 class BPlusTree {
@@ -31,7 +32,7 @@ public:
                      page_id_t root_page_id = INVALID_PAGE_ID);
 
   // Returns true if this B+ tree has no keys and values.
-  bool IsEmpty() const;
+  [[nodiscard]] bool IsEmpty() const;
 
   // Insert a key-value pair into this B+ tree.
   bool Insert(const KeyType &key, const ValueType &value,
@@ -80,14 +81,16 @@ private:
   bool CoalesceOrRedistribute(N *node, Transaction *transaction = nullptr);
 
   template <typename N>
-  void Coalesce(N *&neighbor_node, N *&node, BPInternalPage *&parent, int index,
-                Transaction *transaction = nullptr);
+  void
+  Coalesce(N *neighbor_node, N *node,
+           BPlusTreeInternalPage<KeyType, page_id_t, KeyComparator> *parent,
+           int index, Transaction *transaction = nullptr);
 
   template <typename N> void Redistribute(N *neighbor_node, N *node, int index);
 
   bool AdjustRoot(BPlusTreePage *node);
 
-  void UpdateRootPageId(int insert_record = false);
+  void UpdateRootPageId(bool insert_record = false);
 
   template <class N> bool isSafe(N *node, Operation op);
 
