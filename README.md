@@ -6,8 +6,10 @@ This is a simple Sqlite Database Systems
 
 ## assignment
 
-### Task1: B+ Tree Pages
+- [x] B+ Tree Pages
+- [x] B+ Tree Data Structure
+- [x] Index Iterator
 
-### Task2: B+ Tree Data Structure
+## result
 
-### Task3: Index Iterator
+![b_plus_tree.png](assests/b_plus_tree.png)
