@@ -10,7 +10,6 @@
 #include "common/rid.h"
 #include "index/b_plus_tree.h"
 #include "page/header_page.h"
-
 namespace scudb {
 
 INDEX_TEMPLATE_ARGUMENTS

@@ -65,9 +65,9 @@ public:
   //===--------------------------------------------------------------------===//
   // Mutators and Accessors
   //===--------------------------------------------------------------------===//
-  inline std::thread::id GetThreadId() const { return thread_id_; }
+  [[nodiscard]] inline std::thread::id GetThreadId() const { return thread_id_; }
 
-  inline txn_id_t GetTransactionId() const { return txn_id_; }
+  [[nodiscard]] inline txn_id_t GetTransactionId() const { return txn_id_; }
 
   inline std::shared_ptr<std::deque<WriteRecord>> GetWriteSet() {
     return write_set_;
@@ -97,7 +97,7 @@ public:
 
   inline void SetState(TransactionState state) { state_ = state; }
 
-  inline lsn_t GetPrevLSN() { return prev_lsn_; }
+  [[nodiscard]] inline lsn_t GetPrevLSN() const { return prev_lsn_; }
 
   inline void SetPrevLSN(lsn_t prev_lsn) { prev_lsn_ = prev_lsn; }
 

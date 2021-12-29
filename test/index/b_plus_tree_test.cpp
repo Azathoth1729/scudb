@@ -20,15 +20,15 @@ TEST(BPlusTreeTests, InsertTest1) {
   Schema *key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema);
 
-  DiskManager *disk_manager = new DiskManager("test.db");
-  BufferPoolManager *bpm = new BufferPoolManager(50, disk_manager);
+  auto *disk_manager = new DiskManager("test.db");
+  auto *bpm = new BufferPoolManager(50, disk_manager);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm,
                                                            comparator);
-  GenericKey<8> index_key;
+  GenericKey<8> index_key{};
   RID rid;
   // create transaction
-  Transaction *transaction = new Transaction(0);
+  auto *transaction = new Transaction(0);
 
   // create and fetch header_page
   page_id_t page_id;
@@ -57,7 +57,7 @@ TEST(BPlusTreeTests, InsertTest1) {
   int64_t start_key = 1;
   int64_t current_key = start_key;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     auto location = (*iterator).second;
     EXPECT_EQ(location.GetPageId(), 0);
@@ -80,15 +80,15 @@ TEST(BPlusTreeTests, InsertTest2) {
   Schema *key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema);
 
-  DiskManager *disk_manager = new DiskManager("test.db");
-  BufferPoolManager *bpm = new BufferPoolManager(50, disk_manager);
+  auto *disk_manager = new DiskManager("test.db");
+  auto *bpm = new BufferPoolManager(50, disk_manager);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm,
                                                            comparator);
-  GenericKey<8> index_key;
+  GenericKey<8> index_key{};
   RID rid;
   // create transaction
-  Transaction *transaction = new Transaction(0);
+  auto *transaction = new Transaction(0);
 
   // create and fetch header_page
   page_id_t page_id;
@@ -117,7 +117,7 @@ TEST(BPlusTreeTests, InsertTest2) {
   int64_t start_key = 1;
   int64_t current_key = start_key;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     auto location = (*iterator).second;
     EXPECT_EQ(location.GetPageId(), 0);
@@ -130,7 +130,7 @@ TEST(BPlusTreeTests, InsertTest2) {
   start_key = 3;
   current_key = start_key;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     auto location = (*iterator).second;
     EXPECT_EQ(location.GetPageId(), 0);
@@ -152,15 +152,15 @@ TEST(BPlusTreeTests, DeleteTest1) {
   Schema *key_schema = ParseCreateStatement(createStmt);
   GenericComparator<8> comparator(key_schema);
 
-  DiskManager *disk_manager = new DiskManager("test.db");
-  BufferPoolManager *bpm = new BufferPoolManager(50, disk_manager);
+  auto *disk_manager = new DiskManager("test.db");
+  auto *bpm = new BufferPoolManager(50, disk_manager);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm,
                                                            comparator);
-  GenericKey<8> index_key;
+  GenericKey<8> index_key{};
   RID rid;
   // create transaction
-  Transaction *transaction = new Transaction(0);
+  auto *transaction = new Transaction(0);
 
   // create and fetch header_page
   page_id_t page_id;
@@ -189,7 +189,7 @@ TEST(BPlusTreeTests, DeleteTest1) {
   int64_t start_key = 1;
   int64_t current_key = start_key;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     auto location = (*iterator).second;
     EXPECT_EQ(location.GetPageId(), 0);
@@ -209,7 +209,7 @@ TEST(BPlusTreeTests, DeleteTest1) {
   current_key = start_key;
   int64_t size = 0;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     auto location = (*iterator).second;
     EXPECT_EQ(location.GetPageId(), 0);
@@ -233,15 +233,15 @@ TEST(BPlusTreeTests, DeleteTest2) {
   Schema *key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema);
 
-  DiskManager *disk_manager = new DiskManager("test.db");
-  BufferPoolManager *bpm = new BufferPoolManager(50, disk_manager);
+  auto *disk_manager = new DiskManager("test.db");
+  auto *bpm = new BufferPoolManager(50, disk_manager);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm,
                                                            comparator);
-  GenericKey<8> index_key;
+  GenericKey<8> index_key{};
   RID rid;
   // create transaction
-  Transaction *transaction = new Transaction(0);
+  auto *transaction = new Transaction(0);
 
   // create and fetch header_page
   page_id_t page_id;
@@ -270,7 +270,7 @@ TEST(BPlusTreeTests, DeleteTest2) {
   int64_t start_key = 1;
   int64_t current_key = start_key;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     auto location = (*iterator).second;
     EXPECT_EQ(location.GetPageId(), 0);
@@ -290,7 +290,7 @@ TEST(BPlusTreeTests, DeleteTest2) {
   current_key = start_key;
   int64_t size = 0;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     auto location = (*iterator).second;
     EXPECT_EQ(location.GetPageId(), 0);
@@ -314,15 +314,15 @@ TEST(BPlusTreeTests, ScaleTest) {
   Schema *key_schema = ParseCreateStatement("a bigint");
   GenericComparator<8> comparator(key_schema);
 
-  DiskManager *disk_manager = new DiskManager("test.db");
-  BufferPoolManager *bpm = new BufferPoolManager(30, disk_manager);
+  auto *disk_manager = new DiskManager("test.db");
+  auto *bpm = new BufferPoolManager(30, disk_manager);
   // create b+ tree
   BPlusTree<GenericKey<8>, RID, GenericComparator<8>> tree("foo_pk", bpm,
                                                            comparator);
-  GenericKey<8> index_key;
+  GenericKey<8> index_key{};
   RID rid;
   // create transaction
-  Transaction *transaction = new Transaction(0);
+  auto *transaction = new Transaction(0);
   // create and fetch header_page
   page_id_t page_id;
   auto header_page = bpm->NewPage(page_id);
@@ -354,7 +354,7 @@ TEST(BPlusTreeTests, ScaleTest) {
   int64_t start_key = 1;
   int64_t current_key = start_key;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     current_key = current_key + 1;
   }
@@ -375,7 +375,7 @@ TEST(BPlusTreeTests, ScaleTest) {
   current_key = start_key;
   int64_t size = 0;
   index_key.SetFromInteger(start_key);
-  for (auto iterator = tree.Begin(index_key); iterator.isEnd() == false;
+  for (auto iterator = tree.Begin(index_key); !iterator.isEnd();
        ++iterator) {
     current_key = current_key + 1;
     size = size + 1;
